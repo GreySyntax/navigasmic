@@ -51,8 +51,12 @@ module Navigasmic
 
       label = label_for_item(label)
       link = item.link.is_a?(Proc) ? template.instance_eval(&item.link) : item.link
-
-      label = template.link_to(label, link, options.delete(:link_html)) unless !item.link? || item.disabled?
+      
+      if item.subdomain?
+        label = template.link_to(label, link(item.subdomain), options.delete(:link_html)) unless !item.link? || item.disabled?
+      else
+        label = template.link_to(label, link, options.delete(:link_html)) unless !item.link? || item.disabled?
+      end
 
       item.hidden? ? '' : template.content_tag(@@item_tag, label + buffer, options.delete(:html))
     end

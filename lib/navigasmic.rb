@@ -59,7 +59,7 @@ module Navigasmic #:nodoc:
   #
   class NavigationItem
 
-    attr_accessor :label, :link
+    attr_accessor :label, :link, :subdomain
 
     def initialize(label, options = {}, template = nil)
       @label = label
@@ -77,7 +77,9 @@ module Navigasmic #:nodoc:
 
       options[:highlights_on] = [options[:highlights_on]] if options[:highlights_on].kind_of?(Hash) || options[:highlights_on].kind_of?(String)
       @highlights_on = options[:highlights_on] || []
-
+      
+      @subdomain = options[:subdomain] unless options[:subdomain].empty?
+      
       if link?
         if @link.is_a?(Proc)
           @highlights_on << template.instance_eval(&@link)
@@ -97,6 +99,10 @@ module Navigasmic #:nodoc:
 
     def hidden?
       !@visible
+    end
+    
+    def subdomain?
+      @subdomain && !@subdomain.blank?
     end
 
     def highlighted?(path, params = {}, template = nil)

@@ -38,8 +38,13 @@ module Navigasmic
       buffer = block_given? ? template.capture(self, &proc) : ''
 
       item = NavigationItem.new(label, options, template)
+      
+      if item.subdomain?
+        contents = template.content_tag(:loc, @host + template.url_for(item.link(:subdomain => item.subdomain)))
+      else 
+        contents = template.content_tag(:loc, @host + template.url_for(item.link(:subdomain => item.)))
+      end
 
-      contents = template.content_tag(:loc, @host + template.url_for(item.link))
       contents << template.content_tag(:changefreq, options[:changefreq] || @changefreq)
       contents << template.content_tag(:lastmod, options[:lastmod]) if options[:lastmod]
       contents << template.content_tag(:priority, options[:priority]) if options[:priority]
