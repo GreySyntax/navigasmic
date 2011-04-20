@@ -42,7 +42,7 @@ module Navigasmic
       if item.subdomain?
         contents = template.content_tag(:loc, @host + template.url_for(item.link(:subdomain => item.subdomain)))
       else 
-        contents = template.content_tag(:loc, @host + template.url_for(item.link(:subdomain => item.)))
+        contents = template.content_tag(:loc, @host + template.url_for(item.link))
       end
 
       contents << template.content_tag(:changefreq, options[:changefreq] || @changefreq)
